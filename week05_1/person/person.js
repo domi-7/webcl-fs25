@@ -1,5 +1,5 @@
 import { ObservableList, Observable }                   from "../../kolibri-dist-0.9.10/kolibri/observable.js";
-import { Attribute, LABEL }                             from "../../kolibri-dist-0.9.10/kolibri/presentationModel.js";
+import { Attribute, LABEL, EDITABLE }                             from "../../kolibri-dist-0.9.10/kolibri/presentationModel.js";
 import { personListItemProjector, personFormProjector } from "./personProjector.js";
 
 export { MasterController, MasterView, SelectionController, DetailView }
@@ -25,7 +25,11 @@ const MasterController = () => {
     const personListModel = ObservableList([]); // observable array of Todos, this state is private
 
     return {
-        addPerson:            () => personListModel.add(Person()),
+        addPerson:            () => {
+            const newPerson = Person();
+            personListModel.add(newPerson);
+            return newPerson;
+        },
         removePerson:         personListModel.del,
         onPersonAdd:          personListModel.onAdd,
         onPersonRemove:       personListModel.onDel,
@@ -48,6 +52,9 @@ const NoPerson = (() => { // one time creation, singleton
     const johnDoe = Person();
     johnDoe.firstname.setConvertedValue("");
     johnDoe.lastname.setConvertedValue("");
+
+    johnDoe.firstname.getObs(EDITABLE).setValue(false);
+    johnDoe.lastname.getObs(EDITABLE).setValue(false);
     return johnDoe;
 })();
 

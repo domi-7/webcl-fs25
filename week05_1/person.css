@@ -8,6 +8,10 @@ body {
     padding:    2em;
     box-shadow: 0 4px  8px 0 rgba(0, 0, 0, 0.2),
                 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transform-origin: center bottom;
+    transform: perspective(1000px) rotateX(0) translateZ(0);
+    will-change: transform, opacity;
 }
 h1 {
     text-align: center;
@@ -51,4 +55,17 @@ input.invalid {
 }
 .selected {
     box-shadow: 0 0 0.2em gold;
+}
+input.disabled-style {
+    opacity: 0.5;
+    transform: perspective(300px) rotateX(6deg);
+    pointer-events: none;
+}
+.folded-back {
+    opacity: 0.85;
+    transform: perspective(1000px) rotateX(-12deg) translateZ(-20px) translateY(10px);
+    transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.1),
+                0 3px 10px 0 rgba(0, 0, 0, 0.09);
+    background-color: rgba(250, 250, 250, 0.95);
 }
