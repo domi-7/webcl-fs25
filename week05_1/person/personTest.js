@@ -27,16 +27,16 @@ personSuite.add("crud", assert => {
 
     assert.is(masterContainer.children.length, 1*elementsPerRow);
 
-    // masterController.addPerson();
-    //
-    // assert.is(masterContainer.children.length, 2*elementsPerRow);
-    //
-    // const firstInput = masterContainer.querySelectorAll("input[type=text]")[0];
-    // const firstDeleteButton = masterContainer.querySelectorAll("button")[0];
-    //
-    // firstDeleteButton.click();
-    //
-    // assert.is(masterContainer.children.length, 1*elementsPerRow);
+     masterController.addPerson();
+
+    assert.is(masterContainer.children.length, 2*elementsPerRow);
+
+    const firstInput = masterContainer.querySelectorAll("input[type=text]")[0];
+    const firstDeleteButton = masterContainer.querySelectorAll("button")[0];
+
+    firstDeleteButton.click();
+
+    assert.is(masterContainer.children.length, 1*elementsPerRow);
 
 
 });
