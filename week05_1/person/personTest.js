@@ -1,4 +1,3 @@
-
 import { MasterController, SelectionController, MasterView, DetailView } from './person.js';
 import {TestSuite}                                                       from "../../kolibri-dist-0.9.10/kolibri/util/test.js";
 
@@ -21,11 +20,11 @@ personSuite.add("crud", assert => {
 
     const elementsPerRow = 3;
 
-    assert.is(masterContainer.children.length, 0*elementsPerRow);
+    assert.is(masterContainer.children.length, 0 * elementsPerRow);
 
     masterController.addPerson();
 
-    assert.is(masterContainer.children.length, 1*elementsPerRow);
+    assert.is(masterContainer.children.length, 1 * elementsPerRow);
 
      masterController.addPerson();
 
@@ -36,11 +35,15 @@ personSuite.add("crud", assert => {
 
     firstDeleteButton.click();
 
-    assert.is(masterContainer.children.length, 1*elementsPerRow);
+    assert.is(masterContainer.children.length, 1 * elementsPerRow);
 
 
 });
 
-// todo: test for memory leak (difficult)
+// TODO: test for memory leak (difficult)
+// NOTE: This kind of memory leak test using WeakRef and gc() does not work in the browser,
+// because manual garbage collection is not exposed in browser environments.
+// It can only be tested in Node.js with --expose-gc.
+// We did not use node.js because we would have had to simulate a browser environment.
 
 personSuite.run();

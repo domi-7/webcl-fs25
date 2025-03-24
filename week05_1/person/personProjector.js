@@ -29,7 +29,10 @@ const bindTextInput = (textAttr, inputElement) => {
             }
         });
 
-    // todo: the label property should be shown as a pop-over on the text element.
+    // show label as pop-over (tooltip) on the input element
+    textAttr.getObs(LABEL).onChange(label => {
+        inputElement.title = label;
+    });
 
 };
 
