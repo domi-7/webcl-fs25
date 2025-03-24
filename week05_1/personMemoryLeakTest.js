@@ -1,3 +1,6 @@
+//.mjs files are ES modules per default
+// allows us to use import/export syntax
+
 class TestObservableList {
     constructor() {
         this._items = [];
