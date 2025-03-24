@@ -68,6 +68,7 @@ async function runMemoryLeakTest() {
 
         let person = controller.addPerson();
 
+        // Create a WeakRef, which will allow the person object to be garbage collected
         const weakRef = new WeakRef(person);
 
         controller.removePerson(person);
