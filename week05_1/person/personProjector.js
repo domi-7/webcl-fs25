@@ -37,6 +37,7 @@ const bindTextInput = (textAttr, inputElement) => {
             }
         });
 
+    // todo: the label property should be shown as a pop-over on the text element.
     // show label as pop-over (tooltip/title) on the input element
     textAttr.getObs(LABEL).onChange(label => {
         inputElement.title = label;
@@ -78,6 +79,7 @@ const personListItemProjector = (masterController, selectionController, rootElem
     deleteButton.innerHTML = "&times;";
     deleteButton.onclick = _ => masterController.removePerson(person);
 
+    // todo create the input fields and bind to the attribute props
     const firstnameInputElement = personTextProjector(person.firstname);
     const lastnameInputElement = personTextProjector(person.lastname);
 
@@ -85,6 +87,7 @@ const personListItemProjector = (masterController, selectionController, rootElem
     person.firstname.getObs(EDITABLE).setValue(true);
     person.lastname.getObs(EDITABLE).setValue(true);
 
+    // todo: when a line in the master view is clicked, we have to set the selection
     const selectPerson = () => selectionController.setSelectedPerson(person);
     firstnameInputElement.onclick = selectPerson;
     lastnameInputElement.onclick = selectPerson;
@@ -100,8 +103,9 @@ const personListItemProjector = (masterController, selectionController, rootElem
         rootElement.removeChild(deleteButton);
         rootElement.removeChild(firstnameInputElement);
         rootElement.removeChild(lastnameInputElement);
+        // todo: what to do with selection when person was removed?
         if (selectionController.getSelectedPerson() === removedPerson) {
-            selectionController.setSelectedPerson(null);
+            selectionController.clearSelection();
         }
         removeMe();
     });
@@ -109,6 +113,7 @@ const personListItemProjector = (masterController, selectionController, rootElem
     rootElement.appendChild(deleteButton);
     rootElement.appendChild(firstnameInputElement);
     rootElement.appendChild(lastnameInputElement);
+    // todo: what to do with selection when person was added?
     selectPerson();
 };
 
@@ -152,10 +157,12 @@ const personFormProjector = (detailController, rootElement, person) => {
     const lastnameLabel  = divElement.querySelector("label[for='lastname']");
 
     if (!isReadonly) {
+        // todo: bind text values
         // Person is selected or being added, make inputs editable
         bindTextInput(person.firstname, firstnameInput);
         bindTextInput(person.lastname, lastnameInput);
 
+        // todo: bind label values
         person.firstname.getObs(LABEL).onChange(label => firstnameLabel.textContent = label);
         person.lastname.getObs(LABEL).onChange(label => lastnameLabel.textContent = label);
 
