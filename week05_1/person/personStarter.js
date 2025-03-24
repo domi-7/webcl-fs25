@@ -16,7 +16,6 @@ document.getElementById('plus').onclick = _ => {
 };
 
 // Ensure detail card starts in folded-back state
-//TODO possibly do better?
 document.addEventListener('DOMContentLoaded', () => {
     const detailCard = document.getElementById('detailContainer').closest('.card');
     detailCard.classList.add('folded-back');

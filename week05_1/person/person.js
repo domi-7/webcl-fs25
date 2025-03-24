@@ -11,8 +11,8 @@ const Person = () => {                               // facade
     const lastnameAttr  = Attribute("Mustermann");
     lastnameAttr.getObs(LABEL).setValue("Last Name");
 
-    // lastnameAttr.setConverter( input => input.toUpperCase() );
-    // lastnameAttr.setValidator( input => input.length >= 3   );
+     lastnameAttr.setConverter( input => input.toUpperCase() );
+     lastnameAttr.setValidator( input => input.length >= 3   );
 
     return {
         firstname:          firstnameAttr,
@@ -22,7 +22,7 @@ const Person = () => {                               // facade
 
 const MasterController = () => {
 
-    const personListModel = ObservableList([]); // observable array of Todos, this state is private
+    const personListModel = ObservableList([]); // observable array of persons, this state is private
 
     return {
         addPerson:            () => {

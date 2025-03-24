@@ -1,6 +1,6 @@
 import {VALUE, VALID, EDITABLE, LABEL} from "../../kolibri-dist-0.9.10/kolibri/presentationModel.js";
 
-export { personListItemProjector, personFormProjector }
+export {personListItemProjector, personFormProjector}
 
 const bindTextInput = (textAttr, inputElement) => {
 
@@ -13,8 +13,8 @@ const bindTextInput = (textAttr, inputElement) => {
     //valid changes are reflected in the input element
     textAttr.getObs(VALID, true).onChange(
         valid => valid
-          ? inputElement.classList.remove("invalid")
-          : inputElement.classList.add("invalid")
+            ? inputElement.classList.remove("invalid")
+            : inputElement.classList.add("invalid")
     );
 
     //editable changes are reflected in the input element
@@ -46,13 +46,13 @@ const personTextProjector = textAttr => {
 
 const personListItemProjector = (masterController, selectionController, rootElement, person) => {
 
-    const deleteButton      = document.createElement("Button");
-    deleteButton.setAttribute("class","delete");
-    deleteButton.innerHTML  = "&times;";
-    deleteButton.onclick    = _ => masterController.removePerson(person);
+    const deleteButton = document.createElement("Button");
+    deleteButton.setAttribute("class", "delete");
+    deleteButton.innerHTML = "&times;";
+    deleteButton.onclick = _ => masterController.removePerson(person);
 
     const firstnameInputElement = personTextProjector(person.firstname);
-    const lastnameInputElement  = personTextProjector(person.lastname);
+    const lastnameInputElement = personTextProjector(person.lastname);
 
     // Make inputs editable
     person.firstname.getObs(EDITABLE).setValue(true);
@@ -64,11 +64,11 @@ const personListItemProjector = (masterController, selectionController, rootElem
 
     selectionController.onPersonSelected(
         selected => selected === person
-          ? deleteButton.classList.add("selected")
-          : deleteButton.classList.remove("selected")
+            ? deleteButton.classList.add("selected")
+            : deleteButton.classList.remove("selected")
     );
 
-    masterController.onPersonRemove( (removedPerson, removeMe) => {
+    masterController.onPersonRemove((removedPerson, removeMe) => {
         if (removedPerson !== person) return;
         rootElement.removeChild(deleteButton);
         rootElement.removeChild(firstnameInputElement);
@@ -77,7 +77,7 @@ const personListItemProjector = (masterController, selectionController, rootElem
             selectionController.setSelectedPerson(null);
         }
         removeMe();
-    } );
+    });
 
     rootElement.appendChild(deleteButton);
     rootElement.appendChild(firstnameInputElement);
@@ -87,14 +87,15 @@ const personListItemProjector = (masterController, selectionController, rootElem
 
 const personFormProjector = (detailController, rootElement, person) => {
     // Ensure the card is folded back initially
-    //TODO probably not use closest?
     const detailCard = rootElement.closest('.card');
-    if (!person || person.firstname.getObs(VALUE).getValue() === "") {
-        detailCard.classList.add("folded-back");
-    } else {
-        detailCard.classList.remove("folded-back");
+    if (detailCard != null) {
+        if (!person || person.firstname.getObs(VALUE).getValue() === "") {
+            detailCard.classList.add("folded-back");
+        } else {
+            detailCard.classList.remove("folded-back");
+        }
     }
-    
+
     rootElement.innerHTML = '';
 
     const isReadonly = !person || person.firstname.getObs(VALUE).getValue() === "";
@@ -122,7 +123,7 @@ const personFormProjector = (detailController, rootElement, person) => {
 
         person.firstname.getObs(LABEL).onChange(label => firstnameLabel.textContent = label);
         person.lastname.getObs(LABEL).onChange(label => lastnameLabel.textContent = label);
-        
+
         // Explicitly make inputs editable when a person is selected or when adding a new person
         person.firstname.getObs(EDITABLE).setValue(true);
         person.lastname.getObs(EDITABLE).setValue(true);
@@ -132,11 +133,11 @@ const personFormProjector = (detailController, rootElement, person) => {
         lastnameInput.setAttribute("readonly", true);
         firstnameInput.classList.add("disabled-style");
         lastnameInput.classList.add("disabled-style");
-        
+
         firstnameInput.value = '';
-        lastnameInput.value  = '';
+        lastnameInput.value = '';
         firstnameLabel.textContent = '';
-        lastnameLabel.textContent  = '';
+        lastnameLabel.textContent = '';
     }
 
     if (rootElement.firstChild) {
