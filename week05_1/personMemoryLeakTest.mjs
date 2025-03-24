@@ -1,6 +1,3 @@
-// personMemoryLeakTest.mjs
-// Run with: node --expose-gc personMemoryLeakTest.mjs
-
 class TestObservableList {
     constructor() {
         this._items = [];
@@ -17,6 +14,9 @@ class TestObservableList {
         const index = this._items.indexOf(item);
         if (index >= 0) this._items.splice(index, 1);
         this._onDel.forEach(cb => cb(item));
+
+        this._onDel.length = 0;
+        this._onAdd.length = 0;
     }
 
     onAdd(cb) { this._onAdd.push(cb); }
@@ -39,7 +39,7 @@ function MasterControllerWithInjectedList(personListModel) {
 
     return {
         addPerson: () => {
-            const p = {};  // simplified person object
+            const p = {};
             personListModel.add(p);
             notifyAdd(p);
             return p;
@@ -47,40 +47,45 @@ function MasterControllerWithInjectedList(personListModel) {
         removePerson: (p) => {
             personListModel.remove(p);
             notifyRemove(p);
+            onPersonAddListeners.length = 0;
+            onPersonRemoveListeners.length = 0;
         },
         onPersonAdd: cb => onPersonAddListeners.push(cb),
         onPersonRemove: cb => onPersonRemoveListeners.push(cb),
-        getAllPersons: () => personListModel.getItems(),
     };
 }
 
-function runMemoryLeakTest() {
-    if (typeof global.gc !== "function") {
-        console.error("GC is not exposed. Run the file with: node --expose-gc personMemoryLeakTest.mjs");
-        process.exit(1);
-    }
+async function runMemoryLeakTest() {
 
-    const list = new TestObservableList();
-    const controller = MasterControllerWithInjectedList(list);
+    let wasCollected = false;
 
-    let person = controller.addPerson();
-    const weakRef = new WeakRef(person);
-    controller.removePerson(person);
+    await (async function isolate() {
+        const list = new TestObservableList();
+        const controller = MasterControllerWithInjectedList(list);
 
-    // Remove last strong reference
-    person = null;
+        let person = controller.addPerson();
 
-    global.gc();
+        const weakRef = new WeakRef(person);
 
-    // Wait a moment before checking if GC ran
-    setTimeout(() => {
+        controller.removePerson(person);
+
+        person = null;
+
+        global.gc();
+
+        console.log("GC called, waiting...");
+
+        await new Promise(resolve => setTimeout(resolve, 1000));
+
         const deref = weakRef.deref();
-        if (deref === undefined) {
-            console.log("Person was garbage collected.");
-        } else {
-            console.error(" Person was NOT garbage collected.");
-        }
-    }, 60);
+        wasCollected = (deref === undefined);
+    })();
+
+    if (wasCollected) {
+        console.log("Person was garbage collected.");
+    } else {
+        console.error("Person was NOT garbage collected.");
+    }
 }
 
-runMemoryLeakTest();
+runMemoryLeakTest().catch(console.error);

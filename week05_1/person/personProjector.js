@@ -2,6 +2,14 @@ import {VALUE, VALID, EDITABLE, LABEL} from "../../kolibri-dist-0.9.10/kolibri/p
 
 export {personListItemProjector, personFormProjector}
 
+/**
+ * Binds a text attribute to a given <input> element.
+ * This ensures that changes in the UI are reflected in the model,
+ * and the other way around.
+ *
+ * @param {Object} textAttr - The text attribute object to bind.
+ * @param {HTMLInputElement} inputElement - The DOM input element to bind.
+ */
 const bindTextInput = (textAttr, inputElement) => {
 
     //changes the user makes are written to the text attribute
@@ -29,13 +37,20 @@ const bindTextInput = (textAttr, inputElement) => {
             }
         });
 
-    // show label as pop-over (tooltip) on the input element
+    // show label as pop-over (tooltip/title) on the input element
     textAttr.getObs(LABEL).onChange(label => {
         inputElement.title = label;
     });
 
 };
 
+/**
+ * Creates an <input> element that's bound to the given text attribute,
+ * returning the finished DOM element for display.
+ *
+ * @param {Object} textAttr - The text attribute for the input field
+ * @returns {HTMLInputElement} - A text input element
+ */
 const personTextProjector = textAttr => {
 
     const inputElement = document.createElement("INPUT");
@@ -47,6 +62,15 @@ const personTextProjector = textAttr => {
     return inputElement;
 };
 
+/**
+ * Projects a single Person onto the given rootElement, including
+ * delete button, input fields, and click bindings to update selection.
+ *
+ * @param {Object} masterController - The controller for creating/removing Person objects
+ * @param {Object} selectionController - The controller managing selection
+ * @param {HTMLElement} rootElement - The DOM element to which we'll append Person UI
+ * @param {Object} person - The person object holding firstname/lastname attributes
+ */
 const personListItemProjector = (masterController, selectionController, rootElement, person) => {
 
     const deleteButton = document.createElement("Button");
@@ -88,6 +112,14 @@ const personListItemProjector = (masterController, selectionController, rootElem
     selectPerson();
 };
 
+/**
+ * Renders a detail form for a specific Person, or shows a "folded back" form
+ * if no Person is selected. Includes label bindings and read-only logic.
+ *
+ * @param {Object} detailController - The controller for the detail form
+ * @param {HTMLElement} rootElement - The DOM element that contains the form
+ * @param {Object|null} person - The currently selected person (or null if none)
+ */
 const personFormProjector = (detailController, rootElement, person) => {
     // Ensure the card is folded back initially
     const detailCard = rootElement.closest('.card');
