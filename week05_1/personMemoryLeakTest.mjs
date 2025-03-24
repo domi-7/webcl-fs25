@@ -76,9 +76,9 @@ function runMemoryLeakTest() {
     setTimeout(() => {
         const deref = weakRef.deref();
         if (deref === undefined) {
-            console.log("✅ Person was garbage collected.");
+            console.log("Person was garbage collected.");
         } else {
-            console.error("❌ Person was NOT garbage collected.");
+            console.error(" Person was NOT garbage collected.");
         }
     }, 60);
 }
