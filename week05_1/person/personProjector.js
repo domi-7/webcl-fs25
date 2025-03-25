@@ -70,7 +70,7 @@ const personTextProjector = textAttr => {
  * @param {Object} masterController - The controller for creating/removing Person objects
  * @param {Object} selectionController - The controller managing selection
  * @param {HTMLElement} rootElement - The DOM element to which we'll append Person UI
- * @param {Object} person - The person object holding firstname/lastname attributes
+ * @param {Person} person - The person object holding firstname/lastname attributes
  */
 const personListItemProjector = (masterController, selectionController, rootElement, person) => {
 
@@ -123,7 +123,7 @@ const personListItemProjector = (masterController, selectionController, rootElem
  *
  * @param {Object} detailController - The controller for the detail form
  * @param {HTMLElement} rootElement - The DOM element that contains the form
- * @param {Object|null} person - The currently selected person (or null if none)
+ * @param {Person|null} person - The currently selected person (or null if none)
  */
 const personFormProjector = (detailController, rootElement, person) => {
     // Ensure the card is folded back initially
